@@ -1,14 +1,23 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+
 const app = express();
+dotenv.config();
+
+const connect = () => {
+  mongoose
+    .set('strictQuery', true)
+    .connect(process.env.MONGO)
+    .then(() => {
+      console.log('Conectado ao MongoDB cloud');
+    })
+    .catch((erro) => {
+      throw erro;
+    });
+};
 
 app.listen(3000, () => {
   console.log('Server iniciado na porta 3000');
-});
-
-app.get('/', (req, res) => {
-  res.send('Bem vindo ao meu site, me chamo:');
-});
-
-app.get('/nome', (req, res) => {
-  res.send('FELIPEssssssssssssssssssss');
+  connect();
 });
